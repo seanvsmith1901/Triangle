@@ -33,22 +33,19 @@ class Solution:
 
                     cost_array[i][j] = Point(i, j, cost, prev)
 
-        print("all done")
+        min = inf
+        minPoint = Point(0,0,inf,None)
+        for element in cost_array[num_rows-1]:
+            if element.cost < min:
+                min = element.cost
 
-
-
-
+        return min
 
 class Point:
     def __init__(self, i=0, j=0, cost=inf, previous=None):
         self.i = i
         self.j = j
         self.cost = cost
-        self.previous = previous
-
-    def return_cost(self):
-        return self.cost
-
 
 if __name__ == "__main__":
     triangle = [[2], [3, 4], [6, 5, 7], [4, 1, 8, 3]]
