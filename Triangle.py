@@ -14,15 +14,15 @@ class Solution:
         while cost_array[num_rows-1][max_cols-1].cost == inf:
             for i in range(1, num_rows):
                 for j in range(1, i+1):
-
+                    cell_cost = triangle[i][j]
                     # cost1 is coming down, cost2 is coming left
 
                     if j != i:
-                        cost1 = triangle[i][j] + cost_array[i-1][j].return_cost()
+                        cost1 = cell_cost + cost_array[i-1][j].cost
                     else:
                         cost1 = inf
 
-                    cost2 = triangle[i][j] + cost_array[i][j-1].return_cost()
+                    cost2 = cell_cost + cost_array[i-1][j-1].cost
 
                     if cost2 < cost1:
                         prev = cost_array[i][j-1]
