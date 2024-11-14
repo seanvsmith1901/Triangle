@@ -1,3 +1,6 @@
+from audioop import reverse
+
+
 class Solution:
     def findCircleNum(self, isConnected) -> int:
 
@@ -11,13 +14,37 @@ class Solution:
         # and then I just need to return the total number of SCCs
         # somehow I have to filter the SCCs to make sure they only have edges within teh SCC which
         # is uhh going to be fun to say the least
-
+        currentList = []
         forwardGraph = {}
         for i in range(len(isConnected)):
-            if isConnected[i][2] == 0:
-                forwardGraph[i] = isConnected[i][1]
+            for j in range(len(isConnected)):
+                if i != j:
+                    if isConnected[i][j] == 1:
+                        if i in forwardGraph:
+                            currentList = forwardGraph[i]
+                            currentList.append(j)
+                            forwardGraph[i] = currentList
+                        else:
+                            forwardGraph[i] = [j]
+        # now we have the graph in a representation that makes sense to me
+        # now we have to reverse it
 
-        pass
+        reverseGraph = makeReverseGraph(forwardGraph)
+
+
+
+
+
+
+        # don't forget at the very end, if an node is not in the graph at all, then it is STRONGLY connected to itself lol
+
+
+def makeReverseGraph(forwardGraph):
+    reversedDict = {}
+    for key, values in forwardGraph.items():
+        for value in values:
+            reversedDict.setdefault(value, []).append(key)
+    return reversedDict
 
 
 # find teh SCCS and return those lol
