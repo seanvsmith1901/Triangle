@@ -15,6 +15,8 @@ class Solution:
         # first DFS function returns the postORder
         postOrder = DFS(reverseGraph)
 
+
+
         # the way we keep track of which ones we have visited is kinda wierd
         visited = [False] * len(isConnected) # make a new array of visited (where every node corresponds to its spot in the dict
         totalSccs = 0 # just so we know what they are
