@@ -1,57 +1,40 @@
 import math
+import heapq  # Use a heap to manage the edges more efficiently
+
 
 class Solution:
     def minCostConnectPoints(self, points) -> int:
-        allEdges = {}
-        for edge in points:
-            realEdge = tuple(edge)
-            allEdges[realEdge] = []
 
-        for edge1 in points:
-            for edge2 in points:
-                if edge1 != edge2:
-                    dist = abs(edge1[0]-edge2[0])+abs(edge1[1]-edge2[1]) # order doesn't matter thanks abs
-                    newEdge = dictTuple(dist, edge1, edge2)
-                    allEdges[tuple(edge1)].append(newEdge)
+        n = len(points) #
+        visited = [False] * n  # Keep track of visited points
+        min_heap = []  # use heap to grab smallest cost
+        total_cost = 0  # Variable to accumulate the total cost
+        edges_count = 0  # total edges in tree
 
-            allEdges[tuple(edge1)].sort()
+        # returns didstance (access points so we don't have to pass it)
+        def dist(i, j):
+            return abs(points[i][0] - points[j][0]) + abs(points[i][1] - points[j][1])
 
+        # just start from the first point
+        visited[0] = True
+        for i in range(1, n):
+            heapq.heappush(min_heap, (dist(0, i), 0, i))  # get all the edges on
 
-        cost = 0
-        tree = [points[0]]
-        while len(tree) < len(points): # once the tree conatins all the points
-            min_cost = math.inf
-            min_edge = None
-            for edge in tree:
-                for i in (allEdges[tuple(edge)]):
-                    if i.cost < min_cost and i.goal not in tree:
-                        min_cost = i.cost
-                        min_edge = i
-            cost += min_edge.cost # updatese the cost
+        # here we get to use prims!
+        while min_heap and edges_count < n - 1: # make sure we can leave at the appropraite time
+            cost, start, end = heapq.heappop(min_heap)  # get minimum cost edge that exists
 
-            del allEdges[tuple(min_edge.position)][0] # removes that particualr object, we can't use him again.
-            tree.append(min_edge.goal)  # gets the point we have added and adds it to tree
+            if visited[end]:  # if we have already seen him, don't look at him again
+                continue
 
+            # update our MST
+            total_cost += cost
+            visited[end] = True
+            edges_count += 1
 
+            # access the new point and push him onto the heap.
+            for i in range(n):
+                if not visited[i]:
+                    heapq.heappush(min_heap, (dist(end, i), end, i))
 
-        return cost
-
-
-
-
-
-
-class dictTuple:
-    def __init__(self, cost, position, goal):
-        self.cost = cost
-        self.position = position
-        self.goal = goal
-
-    def  __lt__(self, other):
-        return self.cost < other.cost
-
-
-if __name__ == '__main__':
-    points = [[0,0],[2,2],[3,10],[5,2],[7,0]]
-    cost = Solution().minCostConnectPoints(points)
-    assert cost == 20
+        return total_cost
