@@ -1,4 +1,5 @@
 class Solution(object):
+    # you are an emergency back up option, only to be used if I really need to. thats the whole gist.
     def twoSum(self, nums, target):
         """
         :type nums: List[int]
