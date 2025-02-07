@@ -1,7 +1,4 @@
-import math
 import heapq  # Use a heap to manage the edges more efficiently
-
-
 class Solution:
     def minCostConnectPoints(self, points) -> int:
 
@@ -11,7 +8,7 @@ class Solution:
         total_cost = 0  # Variable to accumulate the total cost
         edges_count = 0  # total edges in tree
 
-        # returns didstance (access points so we don't have to pass it)
+        # returns didstance (access points as well)
         def dist(i, j):
             return abs(points[i][0] - points[j][0]) + abs(points[i][1] - points[j][1])
 
@@ -21,10 +18,10 @@ class Solution:
             heapq.heappush(min_heap, (dist(0, i), 0, i))  # get all the edges on
 
         # here we get to use prims!
-        while min_heap and edges_count < n - 1: # make sure we can leave at the appropraite time
-            cost, start, end = heapq.heappop(min_heap)  # get minimum cost edge that exists
+        while min_heap and edges_count < n - 1: # leave conditions
+            cost, start, end = heapq.heappop(min_heap) # minimum
 
-            if visited[end]:  # if we have already seen him, don't look at him again
+            if visited[end]:  # edge leads outside of tree
                 continue
 
             # update our MST

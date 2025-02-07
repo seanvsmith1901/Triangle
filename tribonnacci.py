@@ -18,4 +18,3 @@ class Solution:
 if __name__ == "__main__":
     n = 25
     output = Solution().tribonacci(n)
-    pass # wheee

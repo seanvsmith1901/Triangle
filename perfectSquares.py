@@ -1,23 +1,17 @@
-from tkinter.font import names
 import numpy
 from math import inf
 
 class Solution:
     def numSquares(self, n: int) -> int:
         target = n
-        total = 0
         upper_bound = numpy.sqrt(target) # not sure if it will let me use that
         upper_bound = upper_bound.astype(int)
 
-        i = upper_bound
-        j = upper_bound
         total_dict = {}
 
         for i in range(upper_bound, 0, -1):
             sum = i * i
             total = 1
-            if i == 5:
-                pass
             for j in range(i, 0, -1):
                 while j > 0:
                     while sum < target:
@@ -39,7 +33,6 @@ class Solution:
                         sum = i * i
                         total = 1
                         break
-
 
         # now we need to find the min item in the dict
         min_total = inf
